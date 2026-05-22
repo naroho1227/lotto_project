@@ -1,0 +1,17 @@
+{% extends 'lotto/base.html' %}
+{% block content %}
+<h2>당첨 내역</h2>
+<table>
+  <tr><th>등수</th><th>구매자</th><th>번호</th><th>회차</th></tr>
+  {% for t in tickets %}
+  <tr>
+    <td><strong>{{ t.rank }}등</strong></td>
+    <td>{{ t.user.username }}</td>
+    <td>{{ t.get_numbers }}</td>
+    <td>{{ t.draw.draw_number }}회차</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="4">당첨 내역이 없습니다.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

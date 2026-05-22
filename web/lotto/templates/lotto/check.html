@@ -1,0 +1,21 @@
+{% extends 'lotto/base.html' %}
+{% block content %}
+<h2>당첨 확인</h2>
+{% if draw %}
+  <p>기준 회차: <strong>{{ draw.draw_number }}회차</strong>
+     &nbsp; 당첨번호: {{ draw.get_numbers }} &nbsp; 보너스: {{ draw.bonus }}</p>
+  <table>
+    <tr><th>내 번호</th><th>결과</th></tr>
+    {% for t in tickets %}
+    <tr>
+      <td>{{ t.numbers }}</td>
+      <td>{% if t.rank == 0 %}낙첨{% else %}<strong>{{ t.rank }}등</strong>{% endif %}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="2">구매한 티켓이 없습니다.</td></tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>아직 추첨이 진행되지 않았습니다.</p>
+{% endif %}
+{% endblock %}
