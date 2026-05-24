@@ -1,20 +1,13 @@
 {% extends 'lotto/base.html' %}
 {% block content %}
 <h2>환영합니다, {{ user.username }}님!</h2>
+
+<p>현재 응모 회차: <strong>제 {{ next_draw_no }}회차</strong></p>
+
 {% if latest %}
   <p>최근 추첨: <strong>{{ latest.draw_number }}회차</strong>
      &nbsp; 당첨번호: {{ latest.get_numbers }} &nbsp; 보너스: {{ latest.bonus }}</p>
 {% else %}
   <p>아직 추첨 내역이 없습니다.</p>
 {% endif %}
-<p>
-  <a href="{% url 'buy_manual' %}">수동 구매</a>
-  &nbsp;|&nbsp;
-  <form method="post" action="{% url 'buy_auto' %}" style="display:inline">
-    {% csrf_token %}
-    <button type="submit">자동 구매</button>
-  </form>
-  &nbsp;|&nbsp;
-  <a href="{% url 'check' %}">당첨 확인</a>
-</p>
 {% endblock %}

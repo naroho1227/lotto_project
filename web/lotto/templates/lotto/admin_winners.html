@@ -1,17 +1,24 @@
 {% extends 'lotto/base.html' %}
 {% block content %}
 <h2>당첨 내역</h2>
-<table>
-  <tr><th>등수</th><th>구매자</th><th>번호</th><th>회차</th></tr>
-  {% for t in tickets %}
-  <tr>
-    <td><strong>{{ t.rank }}등</strong></td>
-    <td>{{ t.user.username }}</td>
-    <td>{{ t.get_numbers }}</td>
-    <td>{{ t.draw.draw_number }}회차</td>
-  </tr>
-  {% empty %}
-  <tr><td colspan="4">당첨 내역이 없습니다.</td></tr>
-  {% endfor %}
-</table>
+{% if tickets %}
+  <table>
+    <thead>
+      <tr><th>등수</th><th>사용자</th><th>회차</th><th>구매 번호</th><th>방식</th></tr>
+    </thead>
+    <tbody>
+      {% for t in tickets %}
+      <tr>
+        <td><strong>{{ t.rank }}등</strong></td>
+        <td>{{ t.user.username }}</td>
+        <td>{% if t.draw %}{{ t.draw.draw_number }}회차{% endif %}</td>
+        <td>{{ t.get_numbers }}</td>
+        <td>{% if t.is_auto %}자동{% else %}수동{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>당첨자가 없습니다.</p>
+{% endif %}
 {% endblock %}

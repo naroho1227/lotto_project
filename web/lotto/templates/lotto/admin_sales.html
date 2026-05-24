@@ -1,18 +1,25 @@
 {% extends 'lotto/base.html' %}
 {% block content %}
 <h2>판매 내역</h2>
-<p>총 {{ tickets|length }}건</p>
-<table>
-  <tr><th>구매자</th><th>번호</th><th>구매 방식</th><th>구매 시각</th></tr>
-  {% for t in tickets %}
-  <tr>
-    <td>{{ t.user.username }}</td>
-    <td>{{ t.get_numbers }}</td>
-    <td>{% if t.is_auto %}자동{% else %}수동{% endif %}</td>
-    <td>{{ t.purchased_at|date:"Y-m-d H:i" }}</td>
-  </tr>
-  {% empty %}
-  <tr><td colspan="4">판매 내역이 없습니다.</td></tr>
-  {% endfor %}
-</table>
+<p>총 {{ tickets|length }}장 판매</p>
+{% if tickets %}
+  <table>
+    <thead>
+      <tr><th>사용자</th><th>회차</th><th>구매 번호</th><th>방식</th><th>구매 일시</th></tr>
+    </thead>
+    <tbody>
+      {% for t in tickets %}
+      <tr>
+        <td>{{ t.user.username }}</td>
+        <td>{% if t.draw %}{{ t.draw.draw_number }}회차{% else %}추첨 대기{% endif %}</td>
+        <td>{{ t.get_numbers }}</td>
+        <td>{% if t.is_auto %}자동{% else %}수동{% endif %}</td>
+        <td>{{ t.purchased_at|date:"Y-m-d H:i" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>판매 내역이 없습니다.</p>
+{% endif %}
 {% endblock %}

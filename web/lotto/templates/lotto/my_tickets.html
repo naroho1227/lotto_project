@@ -1,0 +1,47 @@
+{% extends 'lotto/base.html' %}
+{% block content %}
+<h2>내 구매 내역</h2>
+
+{% if tickets %}
+  <table>
+    <thead>
+      <tr>
+        <th>회차</th>
+        <th>구매 번호</th>
+        <th>구매 방식</th>
+        <th>구매 일시</th>
+        <th>결과</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ticket in tickets %}
+      <tr>
+        <td>
+          {% if ticket.draw %}
+            {{ ticket.draw.draw_number }}회차
+          {% else %}
+            추첨 대기
+          {% endif %}
+        </td>
+        <td>{{ ticket.get_numbers }}</td>
+        <td>{% if ticket.is_auto %}자동{% else %}수동{% endif %}</td>
+        <td>{{ ticket.purchased_at|date:"Y-m-d H:i" }}</td>
+        <td>
+          {% if ticket.draw %}
+            {% if ticket.rank %}
+              <strong>{{ ticket.rank }}등 당첨!</strong>
+            {% else %}
+              미당첨
+            {% endif %}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>구매한 티켓이 없습니다.</p>
+{% endif %}
+{% endblock %}

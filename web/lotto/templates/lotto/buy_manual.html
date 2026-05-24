@@ -1,18 +1,14 @@
 {% extends 'lotto/base.html' %}
 {% block content %}
-<h2>수동 번호 구매</h2>
+<h2>수동 구매 — 제 {{ next_draw_no }}회차</h2>
 {% if error %}<p class="error">{{ error }}</p>{% endif %}
 <form method="post">
   {% csrf_token %}
-  <p>
-    <input type="number" name="n1" min="1" max="45" required style="width:60px">
-    <input type="number" name="n2" min="1" max="45" required style="width:60px">
-    <input type="number" name="n3" min="1" max="45" required style="width:60px">
-    <input type="number" name="n4" min="1" max="45" required style="width:60px">
-    <input type="number" name="n5" min="1" max="45" required style="width:60px">
-    <input type="number" name="n6" min="1" max="45" required style="width:60px">
-  </p>
-  <p><small>1~45 사이의 중복 없는 숫자 6개를 입력하세요.</small></p>
+  <p>1~45 사이의 서로 다른 숫자 6개를 입력하세요.</p>
+  {% for i in "123456" %}
+    <input type="number" name="n{{ i }}" min="1" max="45" required style="width:60px">
+  {% endfor %}
+  <br><br>
   <button type="submit">구매</button>
 </form>
 {% endblock %}

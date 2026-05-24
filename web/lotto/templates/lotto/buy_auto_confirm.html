@@ -1,0 +1,12 @@
+{% extends 'lotto/base.html' %}
+{% block content %}
+<h2>자동 구매 확인 — 제 {{ next_draw_no }}회차</h2>
+<p>랜덤으로 6개 번호를 자동 생성하여 제 <strong>{{ next_draw_no }}회차</strong>에 응모합니다.</p>
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="confirmed" value="yes">
+  <button type="submit">구매 확인</button>
+</form>
+&nbsp;
+<a href="{% url 'index' %}">취소</a>
+{% endblock %}

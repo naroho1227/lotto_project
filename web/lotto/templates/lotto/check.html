@@ -1,21 +1,51 @@
 {% extends 'lotto/base.html' %}
 {% block content %}
 <h2>당첨 확인</h2>
-{% if draw %}
-  <p>기준 회차: <strong>{{ draw.draw_number }}회차</strong>
-     &nbsp; 당첨번호: {{ draw.get_numbers }} &nbsp; 보너스: {{ draw.bonus }}</p>
-  <table>
-    <tr><th>내 번호</th><th>결과</th></tr>
-    {% for t in tickets %}
-    <tr>
-      <td>{{ t.numbers }}</td>
-      <td>{% if t.rank == 0 %}낙첨{% else %}<strong>{{ t.rank }}등</strong>{% endif %}</td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="2">구매한 티켓이 없습니다.</td></tr>
-    {% endfor %}
-  </table>
+
+{% if draws %}
+  <form method="post">
+    {% csrf_token %}
+    <label>회차 선택:
+      <select name="draw_id">
+        {% for d in draws %}
+          <option value="{{ d.pk }}"
+            {% if selected_draw and selected_draw.pk == d.pk %}selected{% endif %}>
+            {{ d.draw_number }}회차 ({{ d.draw_date|date:"Y-m-d" }})
+          </option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">확인</button>
+  </form>
+
+  {% if selected_draw %}
+    <p>당첨번호: <strong>{{ selected_draw.get_numbers }}</strong> &nbsp; 보너스: <strong>{{ selected_draw.bonus }}</strong></p>
+    {% if result %}
+      <table>
+        <thead>
+          <tr><th>구매 번호</th><th>구매 방식</th><th>결과</th></tr>
+        </thead>
+        <tbody>
+          {% for r in result %}
+          <tr>
+            <td>{{ r.ticket.get_numbers }}</td>
+            <td>{% if r.ticket.is_auto %}자동{% else %}수동{% endif %}</td>
+            <td>
+              {% if r.rank %}
+                <strong>{{ r.rank }}등 당첨!</strong>
+              {% else %}
+                미당첨
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>해당 회차에 구매한 티켓이 없습니다.</p>
+    {% endif %}
+  {% endif %}
 {% else %}
-  <p>아직 추첨이 진행되지 않았습니다.</p>
+  <p>아직 추첨 내역이 없습니다.</p>
 {% endif %}
 {% endblock %}

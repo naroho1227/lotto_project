@@ -4,10 +4,10 @@
 {% if error %}<p class="error">{{ error }}</p>{% endif %}
 <form method="post">
   {% csrf_token %}
-  <p>아이디: <input type="text" name="username" autofocus></p>
-  <p>비밀번호: <input type="password" name="password1"></p>
-  <p>비밀번호 확인: <input type="password" name="password2"></p>
-  <button type="submit">가입하기</button>
+  <p><label>아이디: <input type="text" name="username"></label></p>
+  <p><label>비밀번호: <input type="password" name="password1"></label></p>
+  <p><label>비밀번호 확인: <input type="password" name="password2"></label></p>
+  <button type="submit">가입</button>
 </form>
-<p><a href="{% url 'login' %}">이미 계정이 있으신가요? 로그인</a></p>
+<p><a href="{% url 'login' %}">로그인으로 돌아가기</a></p>
 {% endblock %}
